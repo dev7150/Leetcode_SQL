@@ -106,3 +106,54 @@ from tree
 SELECT max(salary) AS SecondHighestSalary
 FROM Employee 
 WHERE Salary <> (SELECT max(salary) FROM Employee)
+
+-- 175. Combine Two Tables
+Select firstName,
+lastName,
+city,
+state
+from Person p
+left join Address a
+on p.personId = a.personId
+
+-- 1581. Customer Who Visited but Did Not Make Any Transactions
+Select customer_id,count(v.visit_id) as count_no_trans
+from Visits v
+left join Transactions t
+on v.visit_id = t.visit_id
+where t.visit_id is null
+group by 1
+
+-- 1148. Article Views I
+select distinct(author_id) as id
+from Views
+where author_id = viewer_id
+order by author_id
+
+-- 197. Rising Temperature
+Select w1.id
+from Weather w1
+join Weather w2
+on datediff(w1.recordDate, w2.recordDate) = 1
+ and w1.temperature > w2.temperature
+
+--  607. Sales Person
+Select sp.name 
+from SalesPerson sp
+left join Orders o
+on o.sales_id = sp.sales_id
+left join Company c
+on c.com_id = o.com_id
+group by sp.sales_id
+having sum(c.name="RED")=0 or sum(c.name is null)>0
+
+--1741. Find Total Time Spent by Each Employee
+select
+    event_day as day,
+    emp_id,
+    sum(out_time - in_time) as total_time
+from
+    Employees
+group by
+    event_day,
+    emp_id;
