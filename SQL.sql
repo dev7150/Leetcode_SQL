@@ -157,3 +157,20 @@ from
 group by
     event_day,
     emp_id;
+
+
+--1141. User Activity for the Past 30 Days I
+Select activity_date as day,
+count(distinct user_id) as active_users
+from Activity
+where datediff('2019-07-27',activity_date) < 30 
+and activity_date < '2019-07-27'
+group by activity_date
+
+--1693. Daily Leads and Partners
+Select date_id,
+make_name,
+count(distinct lead_id) as unique_leads,
+count(distinct partner_id) as unique_partners
+from DailySales
+group by 1,2
