@@ -174,3 +174,48 @@ count(distinct lead_id) as unique_leads,
 count(distinct partner_id) as unique_partners
 from DailySales
 group by 1,2
+
+-- 1729. Find Followers Count
+Select user_id,
+count(follower_id) as followers_count
+from Followers
+where user_id <> follower_id
+group by 1
+order by 1
+
+-- 586. Customer Placing the Largest Number of Orders
+Select customer_number
+from Orders
+group by customer_number
+order by count(order_number) desc
+limit 1
+
+
+-- 511. Game Play Analysis I
+(Select player_id, rank() over (partition by player_id order by event_date) as rnk,
+event_date
+from Activity
+group by 1,3
+)
+Select player_id, event_date as first_login
+from base 
+where rnk = 1
+
+select
+player_id,
+min(event_date) as first_login
+from activity
+group by player_id
+
+-- 1890. The Latest Login in 2020
+Select user_id,
+max(time_stamp) as last_stamp
+from Logins
+where time_stamp like '2020%'
+group by 1
+
+Select user_id,
+max(time_stamp) as last_stamp
+from Logins
+where EXTRACT(YEAR FROM time_stamp) = 2020
+group by 1
