@@ -218,4 +218,45 @@ Select user_id,
 max(time_stamp) as last_stamp
 from Logins
 where EXTRACT(YEAR FROM time_stamp) = 2020
+group by 1;
+
+-- 1393. Capital Gain/Loss
+with base as(Select stock_name, 
+case when operation = "Sell" then price else (-1)*price end as p,
+operation_day
+from Stocks
+order by 1,3 )
+
+Select stock_name, sum(p) as capital_gain_loss
+from base
 group by 1
+
+-- 1407. Top Travellers
+Select name, travelled_distance from
+(Select u.id,name, coalesce(sum(distance),0) as travelled_distance
+from Users u
+left join Rides r
+on u.id = r.user_id
+group by 1)z
+order by 2 desc,1 asc
+
+-- 1158. Market Analysis I
+Select u.user_id as buyer_id, u.join_date,coalesce(count(order_id),0) as orders_in_2019
+from Users u
+left join Orders o
+on u.user_id = o.buyer_id
+and extract(year from order_date) =  2019 --if where used then it does not join at all
+group by 1,2
+
+-- 182. Duplicate Emails
+Select email 
+from Person
+group by 1
+having count(email) > 1
+
+-- 1050. Actors and Directors Who Cooperated At Least Three Times
+Select actor_id,
+director_id
+from ActorDirector
+group by 1,2
+having count(*) > 2
