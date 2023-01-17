@@ -260,3 +260,20 @@ director_id
 from ActorDirector
 group by 1,2
 having count(*) > 2
+
+-- 1587. Bank Account Summary II
+Select name
+,sum(amount) as balance
+from Users
+join Transactions
+on Users.account = Transactions.account
+group by name
+having balance > 10000
+
+
+-- 1084. Sales Analysis III
+SELECT product_id,product_NAME FROM Product
+WHERE product_id IN (
+SELECT product_id FROM Sales GROUP BY 1 HAVING
+MAX(sale_date) <= CAST('2019-03-31' AS DATE)
+AND MIN(sale_date) >= CAST('2019-01-01' AS DATE))
